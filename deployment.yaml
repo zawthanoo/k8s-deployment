@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app1-deployment
+  name: spring-boot-k8s-deployment
   labels:
-    app: app1
+    app: spring-boot-k8s
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: app1
+      app: spring-boot-k8s
   template:
     metadata:
       labels:
-        app: app1
+        app: spring-boot-k8s
     spec:
       containers:
-      - name: app1
-        image: zawthanoo/spring-fat-jar-circleci-k8s:0.1.0-1ae9531-12
+      - name: spring-boot-k8s
+        image: zawthanoo/spring-fat-jar-circleci-k8s:0.1.0-86b4cc9-14
         ports:
         - containerPort: 8080
         readinessProbe:
@@ -32,23 +32,23 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 5
         volumeMounts:
-        - name: app1-config-volume
+        - name: spring-boot-k8s-config-volume
           readOnly: true
-          mountPath: /usr/local/myapp/config/app1-config.yml
-          subPath: app1-config.yml
-        - name: app1-secret-volume
+          mountPath: /usr/local/myapp/config/spring-boot-k8s-config.yml
+          subPath: spring-boot-k8s-config.yml
+        - name: spring-boot-k8s-secret-volume
           readOnly: true
-          mountPath: /usr/local/myapp/config/app1-secret.yml
-          subPath: app1-secret.yml
+          mountPath: /usr/local/myapp/config/spring-boot-k8s-secret.yml
+          subPath: spring-boot-k8s-secret.yml
       imagePullSecrets:
       - name: muturegistrykey
       volumes:
-        - name: app1-config-volume
+        - name: spring-boot-k8s-config-volume
           configMap:
-            name: app1-config
+            name: spring-boot-k8s-config
             items:
-            - key: app1-config.yml
-              path: app1-config.yml
-        - name: app1-secret-volume
+            - key: spring-boot-k8s-config.yml
+              path: spring-boot-k8s-config.yml
+        - name: spring-boot-k8s-secret-volume
           secret:
-            secretName: app1-secret
+            secretName: spring-boot-k8s-secret

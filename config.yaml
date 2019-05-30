@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: app1-config
+  name: spring-boot-k8s-config
   labels:
-      app: app1-config
+      app: spring-boot-k8s-config
 data:
-  app1-config.yml: |
+  spring-boot-k8s-config.yml: |
     server:
       servlet:
         contextPath: /spring-k8s

@@ -10,5 +10,5 @@ spec:
       paths:
       - path: /spring-k8s
         backend:
-          serviceName: app1-svc
+          serviceName: spring-boot-k8s-svc
           servicePort: 8080          
