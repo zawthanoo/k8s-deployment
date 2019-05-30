@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app1-config
+  labels:
+      app: app1-config
+data:
+  app1-config.yml: |
+    server:
+      servlet:
+        contextPath: /spring-k8s
+    target:
+      application: spring-k8s
+      description: Testing kubernetes deployment,service,configMap,secret,ingress.

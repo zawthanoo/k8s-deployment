@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1-deployment
+  labels:
+    app: app1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      containers:
+      - name: app1
+        image: zawthanoo/spring-fat-jar-circleci-k8s:0.1.0-1ae9531-12
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /spring-k8s
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /spring-k8s
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        volumeMounts:
+        - name: app1-config-volume
+          readOnly: true
+          mountPath: /usr/local/myapp/config/app1-config.yml
+          subPath: app1-config.yml
+        - name: app1-secret-volume
+          readOnly: true
+          mountPath: /usr/local/myapp/config/app1-secret.yml
+          subPath: app1-secret.yml
+      imagePullSecrets:
+      - name: muturegistrykey
+      volumes:
+        - name: app1-config-volume
+          configMap:
+            name: app1-config
+            items:
+            - key: app1-config.yml
+              path: app1-config.yml
+        - name: app1-secret-volume
+          secret:
+            secretName: app1-secret
