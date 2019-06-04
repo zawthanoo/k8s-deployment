@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: example-ingress
+  name: spring-boot-k8s-ingress
   annotations:
     ingress.kubernetes.io/rewrite-target: /
 spec:
@@ -10,5 +10,5 @@ spec:
       paths:
       - path: /spring-k8s
         backend:
-          serviceName: spring-boot-k8s-svc
-          servicePort: 8080          
+          serviceName: spring-boot-k8s-service
+          servicePort: 8080      

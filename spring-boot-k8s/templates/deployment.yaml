@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "spring-boot-k8s.fullname" . }}-deployment
+  labels:
+    app: {{ include "spring-boot-k8s.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "spring-boot-k8s.fullname" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "spring-boot-k8s.fullname" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.appServer.port }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.livenessProbe.httpGet.path }}
+            port: {{ .Values.livenessProbe.httpGet.port }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.readinessProbe.httpGet.path }}
+            port: {{ .Values.readinessProbe.httpGet.port }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+        volumeMounts:
+        - name: {{ include "spring-boot-k8s.fullname" . }}-config-volume
+          readOnly: true
+          mountPath: {{ .Values.volumeMounts.configMountPath }}
+          subPath: {{ .Values.volumeMounts.configSubPath }}
+        - name: {{ include "spring-boot-k8s.fullname" . }}-secret-volume
+          readOnly: true
+          mountPath: {{ .Values.volumeMounts.serectMountPath }}
+          subPath: {{ .Values.volumeMounts.serectSubPath }}
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+      imagePullSecrets:
+      - name: muturegistrykey
+      volumes:
+        - name: {{ include "spring-boot-k8s.fullname" . }}-config-volume
+          configMap:
+            name: {{ include "spring-boot-k8s.fullname" . }}-config
+            items:
+            - key: {{ .Values.volumeMounts.configSubPath }}
+              path: {{ .Values.volumeMounts.configSubPath }}
+        - name: {{ include "spring-boot-k8s.fullname" . }}-secret-volume
+          secret:
+            secretName: {{ include "spring-boot-k8s.fullname" . }}-secret      
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

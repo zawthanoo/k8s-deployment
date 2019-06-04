@@ -1,0 +1,79 @@
+# Default values for spring-boot-k8s.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository:  zawthanoo/spring-fat-jar-circleci-k8s
+  tag: 0.1.0-9e40b34-15
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: muturegistrykey
+nameOverride: ""
+fullnameOverride: "spring-boot-k8s"
+
+service:
+  type: ClusterIP
+  protocol: TCP
+  port: 8080
+
+appServer:
+  name: tomcat
+  protocol: TCP
+  port: 8080
+  contextPath: /spring-k8s
+
+livenessProbe:
+  httpGet:
+    path: /spring-k8s
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /spring-k8s
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 5
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 1024Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 512Mi
+  requests:
+    memory: 1024Mi
+
+volumeMounts:
+  configMountPath: /usr/local/myapp/config/spring-boot-k8s-config.yml
+  configSubPath: spring-boot-k8s-config.yml
+  serectMountPath: /usr/local/myapp/config/spring-boot-k8s-secret.yml
+  serectSubPath: spring-boot-k8s-secret.yml
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
