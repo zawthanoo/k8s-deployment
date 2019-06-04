@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
       - name: spring-boot-k8s
-        image: zawthanoo/spring-fat-jar-circleci-k8s:0.1.0-86b4cc9-14
+        image: zawthanoo/spring-fat-jar-circleci-k8s:0.1.0-9e40b34-15
         ports:
         - containerPort: 8080
         readinessProbe:
