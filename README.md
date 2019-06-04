@@ -155,7 +155,7 @@ $ kubectl apply -f config.yaml  -f secret.yaml -f deployment.yaml -f service.yam
 ```
 Check in browser : 
 ```
-http://ip-address/spring-k2
+http://ip-address/spring-k8s
 ```
 If you don't have `kubernetes` enviroment, [kubernetes HA Install + Rancher 2.0](https://github.com/zawthanoo/setup-rke)
 
