@@ -1,3 +1,7 @@
+`kubectl` directory: kubernetes deployment normal way.
+
+`spring-boot-k8s` directory: kubernetes deployment using [helm](https://helm.sh/).
+
 # How to deploy docker image on kubernets?
 
 In this tutorials, `kubernetes` will deploy docker-image from my public docker repository [docker-hub](https://cloud.docker.com/repository/registry-1.docker.io/zawthanoo/spring-fat-jar-circleci-k8s).  
