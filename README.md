@@ -6,7 +6,6 @@
 
 In this tutorials, `kubernetes` will deploy docker-image from my public docker repository [docker-hub](https://cloud.docker.com/repository/registry-1.docker.io/zawthanoo/spring-fat-jar-circleci-k8s).  
 In the repository, I have spring-boot application `docker-image` build by `circleci`.
-You can reference here [Building spring-boot docker image with CircleCi](https://github.com/zawthanoo/spring-fat-jar-circleci-k8s).
 
 config.yaml
 ```yml
